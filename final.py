@@ -61,10 +61,10 @@ for i in range(m):
                     element_err = dist_X[i,iterr_x] - dist_Y[j,iterr_y]
                     # print(dist_X[i] , dist_Y[j],i,j)
                     if np.abs(element_err) < 1:
-                        if iterr_y in corres.keys():
-                            corres[iterr_y].append(iterr_x)
+                        if iterr_x in corres.keys():
+                            corres[iterr_x].append(iterr_y)
                         else:
-                            corres[iterr_y] = [iterr_x]
+                            corres[iterr_x] = [iterr_y]
             # flag = False
             intersec_ip[i] = corres 
             corres = {}
@@ -93,9 +93,9 @@ val = [x[0] for x in values_list]
 x_points = np.array(lst1)
 # y_points = np.array([[values_list][k][0] for k in range(len(values_list))])
 Y_in = np.array(lst2)
-y_points = Y_in
+y_points = Y_in[val,:]
 
-x_points = x_points[val,:]
+
 # Print correspondence indices
 for i, (idx1, idx2) in enumerate(XY_indices):
     value1 = x_points[idx1]
@@ -108,13 +108,24 @@ ax = fig.add_subplot(111, projection='3d')
 ax.scatter(x_points[:,0], x_points[:,1], x_points[:,2], c='blue', label='X')
 ax.scatter(y_points[:,0], y_points[:,1], y_points[:,2], c='red', label='Y')
 
+# # Connect corresponding points
+# for i, (idx1, idx2) in enumerate(XY_indices):
+#     x_connect = x_points[idx1]
+#     y_connect = y_points[idx2]
+#     ax.plot([x_connect[0], y_connect[0]], [x_connect[1], y_connect[1]], [x_connect[2], y_connect[2]], c='green', linestyle='dashed')
+#     ax.text(x_connect[0], x_connect[1], x_connect[2], str(x_points[idx1]), color='black', fontsize=8, horizontalalignment='left')
+#     ax.text(y_connect[0], y_connect[1], y_connect[2], str(y_points[idx2]), color='black', fontsize=8, horizontalalignment='left')
+
 # Connect corresponding points
-for i, (idx1, idx2) in enumerate(XY_indices):
-    x_connect = x_points[idx1]
-    y_connect = y_points[idx2]
+for ind in range(m):
+    print(ind)
+    x_connect = x_points[ind]
+    y_connect = y_points[ind]
     ax.plot([x_connect[0], y_connect[0]], [x_connect[1], y_connect[1]], [x_connect[2], y_connect[2]], c='green', linestyle='dashed')
-    ax.text(x_connect[0], x_connect[1], x_connect[2], str(x_points[idx1]), color='black', fontsize=8, horizontalalignment='left')
-    ax.text(y_connect[0], y_connect[1], y_connect[2], str(y_points[idx2]), color='black', fontsize=8, horizontalalignment='left')
+    ax.text(x_connect[0], x_connect[1], x_connect[2], str(x_points[ind]), color='black', fontsize=8, horizontalalignment='left')
+    ax.text(y_connect[0], y_connect[1], y_connect[2], str(y_points[ind]), color='black', fontsize=8, horizontalalignment='left')
+
+    
 
 ax.set_xlabel('X-axis')
 ax.set_ylabel('Y-axis')
